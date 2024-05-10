@@ -6,7 +6,7 @@ networks:
 services:
   prometheus:
     image: prom/prometheus:v2.47.0
-    container_name: celestia_da_prometheus
+    container_name: celestia_prometheus
     user: ${USERID:-1000}:${USERGP:-1000}
     volumes:
       - ./prometheus/:/etc/prometheus/:ro
@@ -53,7 +53,7 @@ services:
 
   alertmanager:
     image: prom/alertmanager:v0.26.0
-    container_name: celestia_da_alertmanager
+    container_name: celestia_alertmanager
     user: ${USERID:-1000}:${USERGP:-1000}
     networks:
       - celestia_da_monitoring
@@ -61,7 +61,7 @@ services:
       - "9093:9093"
     volumes:
       - ./prometheus/alert_manager:/etc/alertmanager:ro
-      - ./data/alert_manager:/data
+      - ./data/alertmanager:/data
     command:
       - '--config.file=/etc/alertmanager/alertmanager.yml'
     #  - '--storage.path=/data'

@@ -10,7 +10,7 @@ datasources:
   isDefault: true
   access: proxy
   orgId: 1
-  url: http://prometheus:9090
+  url: http://celestia_prometheus:9090
   version: 1
   editable: true
   jsonData:
@@ -19,6 +19,6 @@ datasources:
 - name: Loki
   type: loki
   access: proxy
-  url: http://loki:3100
+  url: http://celestia_loki:3100
   jsonData:
     maxLines: 1000

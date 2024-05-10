@@ -10,7 +10,7 @@ alerting:
       timeout: 10s
       api_version: v2
       static_configs:
-        - targets: [ celestia_da_alertmanager:9093 ]
+        - targets: [ celestia_alertmanager:9093 ]
 
 rule_files:
   - /etc/prometheus/alerts/rules.yaml
