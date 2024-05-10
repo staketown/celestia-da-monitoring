@@ -14,7 +14,7 @@ route:
     - receiver: 'discord'
       group_by: ['...']
 
-  receiver: node-discord
+  receiver: discord
 
 receivers:
   - name: 'discord'
