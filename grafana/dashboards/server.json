@@ -26,7 +26,6 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 14914,
   "graphTooltip": 0,
-  "id": 2,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -59,7 +58,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PA553F4D380FC2FA5"
+        "uid": "PBFA97CFB590B2093"
       },
       "description": "Core node uptime",
       "fieldConfig": {
@@ -134,8 +133,9 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "sum(time() - node_boot_time_seconds{instance=\"$instance\"})",
+          "expr": "sum(time() - node_boot_time_seconds{})",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -152,7 +152,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PA553F4D380FC2FA5"
+        "uid": "PBFA97CFB590B2093"
       },
       "description": "",
       "fieldConfig": {
@@ -219,8 +219,9 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "count(count(node_cpu_seconds_total{instance=~\"$instance\", mode='system'}) by (cpu))",
+          "expr": "count(count(node_cpu_seconds_total{mode='system'}) by (cpu))",
           "format": "time_series",
           "instant": true,
           "interval": "",
@@ -236,7 +237,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PA553F4D380FC2FA5"
+        "uid": "PBFA97CFB590B2093"
       },
       "description": "",
       "fieldConfig": {
@@ -300,8 +301,9 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "100 - (avg by(alias) (irate(node_cpu_seconds_total{instance=~\"$instance\", mode=\"idle\"}[1m])) * 100)",
+          "expr": "100 - (avg by(alias) (irate(node_cpu_seconds_total{mode=\"idle\"}[1m])) * 100)",
           "hide": false,
           "instant": true,
           "interval": "",
@@ -313,8 +315,9 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "(1 - (node_memory_MemAvailable_bytes{instance=~\"$instance\"} / (node_memory_MemTotal_bytes{instance=~\"$instance\"})))* 100",
+          "expr": "(1 - (node_memory_MemAvailable_bytes / (node_memory_MemTotal_bytes)))* 100",
           "hide": false,
           "instant": true,
           "interval": "",
@@ -326,8 +329,9 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "(1 - (node_memory_SwapFree_bytes{instance=~\"$instance\"} / node_memory_SwapTotal_bytes{instance=~\"$instance\"})) * 100",
+          "expr": "(1 - (node_memory_SwapFree_bytes / node_memory_SwapTotal_bytes)) * 100",
           "hide": false,
           "instant": false,
           "interval": "",
@@ -339,8 +343,9 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "100 - (node_filesystem_free_bytes{instance=~\"$instance\", device=\"/dev/sda2\"} *100 / node_filesystem_size_bytes{instance=~\"$instance\", device=\"/dev/sda2\"})",
+          "expr": "100 - (node_filesystem_free_bytes{device=\"/dev/sda2\"} *100 / node_filesystem_size_bytes{device=\"/dev/sda2\"})",
           "hide": false,
           "instant": false,
           "interval": "",
@@ -352,11 +357,13 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "100 - (node_filesystem_free_bytes{instance=~\"$instance\", device=\"/dev/sda1\"} *100 / node_filesystem_size_bytes{instance=~\"$instance\", device=\"/dev/sda1\"})",
+          "expr": "100 - (node_filesystem_free_bytes{device=\"/dev/sda1\"} *100 / node_filesystem_size_bytes{device=\"/dev/sda1\"})",
           "hide": false,
           "interval": "",
           "legendFormat": "Boot",
+          "range": true,
           "refId": "F"
         }
       ],
@@ -366,7 +373,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PA553F4D380FC2FA5"
+        "uid": "PBFA97CFB590B2093"
       },
       "description": "",
       "fieldConfig": {
@@ -427,8 +434,9 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "node_filefd_allocated{instance=~\"$instance\"}",
+          "expr": "node_filefd_allocated",
           "format": "time_series",
           "instant": false,
           "interval": "10s",
@@ -444,7 +452,7 @@
       "columns": [],
       "datasource": {
         "type": "prometheus",
-        "uid": "PA553F4D380FC2FA5"
+        "uid": "PBFA97CFB590B2093"
       },
       "fontSize": "120%",
       "gridPos": {
@@ -591,8 +599,9 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "node_filesystem_size_bytes{instance=~'$instance',fstype=~\"ext4|xfs\"}",
+          "expr": "node_filesystem_size_bytes{fstype=~\"ext4|xfs\"}",
           "format": "table",
           "hide": true,
           "instant": true,
@@ -606,8 +615,9 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "node_filesystem_avail_bytes {instance=~'$instance',fstype=~\"ext4|xfs\"}",
+          "expr": "node_filesystem_avail_bytes {fstype=~\"ext4|xfs\"}",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -621,8 +631,9 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "1-(node_filesystem_free_bytes{instance=~'$instance',fstype=~\"ext4|xfs\"} / node_filesystem_size_bytes{instance=~'$instance',fstype=~\"ext4|xfs\"})",
+          "expr": "1-(node_filesystem_free_bytes{fstype=~\"ext4|xfs\"} / node_filesystem_size_bytes{fstype=~\"ext4|xfs\"})",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -630,18 +641,6 @@
           "intervalFactor": 1,
           "legendFormat": "",
           "refId": "B"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PA553F4D380FC2FA5"
-          },
-          "expr": "",
-          "format": "table",
-          "interval": "10s",
-          "intervalFactor": 1,
-          "legendFormat": "",
-          "refId": "D"
         }
       ],
       "title": "Free space for each partition",
@@ -651,7 +650,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PA553F4D380FC2FA5"
+        "uid": "PBFA97CFB590B2093"
       },
       "description": "",
       "fieldConfig": {
@@ -714,8 +713,9 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "node_memory_MemTotal_bytes{instance=~\"$instance\"}",
+          "expr": "node_memory_MemTotal_bytes",
           "format": "time_series",
           "instant": true,
           "interval": "",
@@ -735,7 +735,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "PA553F4D380FC2FA5"
+        "uid": "PBFA97CFB590B2093"
       },
       "fieldConfig": {
         "defaults": {
@@ -806,12 +806,14 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "node_load1{instance=~\"$instance\"}*100",
+          "expr": "node_load1*100",
           "format": "time_series",
           "interval": "10s",
           "intervalFactor": 2,
           "legendFormat": "Load 1m",
+          "range": true,
           "refId": "A",
           "step": 480
         },
@@ -820,12 +822,14 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "node_load5{instance=~\"$instance\"}*100",
+          "expr": "node_load5*100",
           "format": "time_series",
           "interval": "10s",
           "intervalFactor": 2,
           "legendFormat": "Load 5m",
+          "range": true,
           "refId": "B",
           "step": 480
         },
@@ -834,12 +838,14 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "node_load15{instance=~\"$instance\"}*100",
+          "expr": "node_load15*100",
           "format": "time_series",
           "interval": "10s",
           "intervalFactor": 2,
           "legendFormat": "Load 15m",
+          "range": true,
           "refId": "C",
           "step": 480
         }
@@ -935,7 +941,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "PA553F4D380FC2FA5"
+        "uid": "PBFA97CFB590B2093"
       },
       "decimals": 2,
       "description": "node_disk_io_time_seconds_total：\nThe number of milliseconds the disk spends on input/output operations. This value is the accumulated value.（Milliseconds Spent Doing I/Os）\n\nirate(node_disk_io_time_seconds_total[1m])：\nCalculate the rate per second: (last value - last previous value) / timestamp difference, that is, the percentage of time that the disk spends on I/O operations in 1 second.",
@@ -986,8 +992,9 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "avg(irate(node_cpu_seconds_total{instance=~\"$instance\",mode=\"system\"}[1m]))",
+          "expr": "avg(irate(node_cpu_seconds_total{mode=\"system\"}[1m]))",
           "format": "time_series",
           "instant": false,
           "interval": "",
@@ -1001,12 +1008,14 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "avg(irate(node_cpu_seconds_total{instance=~\"$instance\",mode=\"user\"}[1m]))",
+          "expr": "avg(irate(node_cpu_seconds_total{mode=\"user\"}[1m]))",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "User",
+          "range": true,
           "refId": "B",
           "step": 240
         },
@@ -1015,13 +1024,15 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "avg(irate(node_cpu_seconds_total{instance=~\"$instance\",mode=\"idle\"}[1m]))",
+          "expr": "avg(irate(node_cpu_seconds_total{mode=\"idle\"}[1m]))",
           "format": "time_series",
           "hide": true,
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Idle",
+          "range": true,
           "refId": "F",
           "step": 240
         },
@@ -1030,12 +1041,14 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "avg(irate(node_cpu_seconds_total{instance=~\"$instance\",mode=\"iowait\"}[1m]))",
+          "expr": "avg(irate(node_cpu_seconds_total{mode=\"iowait\"}[1m]))",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Iowait",
+          "range": true,
           "refId": "D",
           "step": 240
         },
@@ -1044,12 +1057,14 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "irate(node_disk_io_time_seconds_total{instance=~\"$instance\"}[1m])",
+          "expr": "irate(node_disk_io_time_seconds_total[1m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "{{device}}_% of I/O operations per second",
+          "range": true,
           "refId": "C"
         },
         {
@@ -1057,10 +1072,12 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
           "expr": "avg(irate(node_cpu_seconds_total{mode=\"system\"}[1m]))",
           "interval": "",
           "legendFormat": "test",
+          "range": true,
           "refId": "E"
         }
       ],
@@ -1115,7 +1132,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "PA553F4D380FC2FA5"
+        "uid": "PBFA97CFB590B2093"
       },
       "description": "Reads completed: Reads per second per disk partition\n\nWrites completed: Number of writes per second per disk partition\n\nIO now Number of input/output requests being processed per disk partition per second",
       "fill": 2,
@@ -1150,7 +1167,7 @@
       },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "9.4.7",
+      "pluginVersion": "10.1.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1169,13 +1186,15 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "irate(node_disk_reads_completed_total{instance=~\"$instance\"}[1m])",
+          "expr": "irate(node_disk_reads_completed_total{}[1m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{device}}_read",
+          "range": true,
           "refId": "A",
           "step": 10
         },
@@ -1184,13 +1203,15 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "irate(node_disk_writes_completed_total{instance=~\"$instance\"}[1m])",
+          "expr": "irate(node_disk_writes_completed_total[1m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{device}}_write",
+          "range": true,
           "refId": "B",
           "step": 10
         },
@@ -1199,13 +1220,15 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "node_disk_io_now{instance=~\"$instance\"}",
+          "expr": "node_disk_io_now",
           "format": "time_series",
           "hide": true,
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "{{device}}",
+          "range": true,
           "refId": "C"
         }
       ],
@@ -1249,7 +1272,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "PA553F4D380FC2FA5"
+        "uid": "PBFA97CFB590B2093"
       },
       "description": "Read bytes The number of bits read per second per disk partition\nWritten bytes The number of bits written per second per disk partition",
       "fill": 2,
@@ -1284,7 +1307,7 @@
       },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "9.4.7",
+      "pluginVersion": "10.1.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1304,12 +1327,14 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "irate(node_disk_read_bytes_total{instance=~\"$instance\"}[1m])",
+          "expr": "irate(node_disk_read_bytes_total[1m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{device}}_read",
+          "range": true,
           "refId": "A",
           "step": 10
         },
@@ -1318,13 +1343,15 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "irate(node_disk_written_bytes_total{instance=~\"$instance\"}[1m])",
+          "expr": "irate(node_disk_written_bytes_total[1m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{device}}_write",
+          "range": true,
           "refId": "B",
           "step": 10
         }
@@ -1371,7 +1398,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "PA553F4D380FC2FA5"
+        "uid": "PBFA97CFB590B2093"
       },
       "description": "Read time ms Number of seconds per disk partition read operation\n\nWrite time ms Number of seconds spent per disk partition write operation\n\nIO time ms Number of seconds spent per disk partition input/output operation\n\n IO time weighted Weighted seconds spent per disk partition input/output operation",
       "fill": 3,
@@ -1406,7 +1433,7 @@
       },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "9.4.7",
+      "pluginVersion": "10.1.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1425,13 +1452,15 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "irate(node_disk_io_time_seconds_total{instance=~\"$instance\"}[1m])",
+          "expr": "irate(node_disk_io_time_seconds_total[1m])",
           "format": "time_series",
           "hide": true,
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{device}}",
+          "range": true,
           "refId": "A",
           "step": 10
         },
@@ -1440,13 +1469,15 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "irate(node_disk_io_time_weighted_seconds_total{instance=~\"$instance\"}[1m])",
+          "expr": "irate(node_disk_io_time_weighted_seconds_total[1m])",
           "format": "time_series",
           "hide": true,
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "{{device}}_weighted",
+          "range": true,
           "refId": "D"
         },
         {
@@ -1454,13 +1485,15 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "irate(node_disk_read_time_seconds_total{instance=~\"$instance\"}[1m])",
+          "expr": "irate(node_disk_read_time_seconds_total[1m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "{{device}}_read",
+          "range": true,
           "refId": "B"
         },
         {
@@ -1468,13 +1501,15 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "irate(node_disk_write_time_seconds_total{instance=~\"$instance\"}[1m])",
+          "expr": "irate(node_disk_write_time_seconds_total[1m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "{{device}}_write",
+          "range": true,
           "refId": "C"
         }
       ],
@@ -1516,7 +1551,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "PA553F4D380FC2FA5"
+        "uid": "PBFA97CFB590B2093"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -1550,7 +1585,7 @@
       },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "9.4.7",
+      "pluginVersion": "10.1.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1569,12 +1604,14 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "irate(node_network_receive_bytes_total{instance=~'$instance',device!~'tap.*'}[5m])*8",
+          "expr": "irate(node_network_receive_bytes_total{device!~'tap.*'}[5m])*8",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{device}}_in download",
+          "range": true,
           "refId": "A",
           "step": 4
         },
@@ -1583,12 +1620,14 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "irate(node_network_transmit_bytes_total{instance=~'$instance',device!~'tap.*'}[5m])*8",
+          "expr": "irate(node_network_transmit_bytes_total{device!~'tap.*'}[5m])*8",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{device}}_out upload",
+          "range": true,
           "refId": "B",
           "step": 4
         }
@@ -1633,7 +1672,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "PA553F4D380FC2FA5"
+        "uid": "PBFA97CFB590B2093"
       },
       "description": "CurrEstab - TCP connections with current state ESTABLISHED or CLOSE-WAIT\n\nActiveOpens - TCP average connections that have been converted from CLOSED state to SYN-SENT state (within 1 minute)\n\nPassiveOpens - Directly from LISTEN state The average number of TCP connections to SYN-RCVD state (within 1 minute)\n\nTCP_all oc - the number of TCP sockets allocated (established, applied to sk_buff)\n\nTCP_inuse - in use (listening The number of TCP sockets \n\nTCP_tw - the number of TCP connections waiting to be closed",
       "fill": 0,
@@ -1667,7 +1706,7 @@
       },
       "paceLength": 10,
       "percentage": false,
-      "pluginVersion": "9.4.7",
+      "pluginVersion": "10.1.4",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1681,13 +1720,15 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "node_netstat_Tcp_CurrEstab{instance=~'$instance'}",
+          "expr": "node_netstat_Tcp_CurrEstab",
           "format": "time_series",
           "hide": false,
           "interval": "10s",
           "intervalFactor": 1,
           "legendFormat": "ESTABLISHED",
+          "range": true,
           "refId": "A",
           "step": 20
         },
@@ -1696,12 +1737,14 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "node_sockstat_TCP_tw{instance=~'$instance'}",
+          "expr": "node_sockstat_TCP_tw",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "TCP_tw",
+          "range": true,
           "refId": "D"
         },
         {
@@ -1709,13 +1752,15 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "irate(node_netstat_Tcp_ActiveOpens{instance=~'$instance'}[1m])",
+          "expr": "irate(node_netstat_Tcp_ActiveOpens[1m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "ActiveOpens",
+          "range": true,
           "refId": "B"
         },
         {
@@ -1723,12 +1768,14 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "irate(node_netstat_Tcp_PassiveOpens{instance=~'$instance'}[1m])",
+          "expr": "irate(node_netstat_Tcp_PassiveOpens[1m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "PassiveOpens",
+          "range": true,
           "refId": "C"
         },
         {
@@ -1736,12 +1783,14 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "node_sockstat_TCP_alloc{instance=~'$instance'}",
+          "expr": "node_sockstat_TCP_alloc",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "TCP_alloc",
+          "range": true,
           "refId": "E"
         },
         {
@@ -1749,12 +1798,14 @@
             "type": "prometheus",
             "uid": "PA553F4D380FC2FA5"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "node_sockstat_TCP_inuse{instance=~'$instance'}",
+          "expr": "node_sockstat_TCP_inuse",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "TCP_inuse",
+          "range": true,
           "refId": "F"
         }
       ],
@@ -1804,13 +1855,13 @@
     "list": []
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Server monitoring",
   "uid": "cosmos_validator_main",
-  "version": 1,
+  "version": 3,
   "weekStart": ""
 }
