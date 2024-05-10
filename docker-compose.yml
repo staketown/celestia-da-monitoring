@@ -27,7 +27,7 @@ services:
   grafana:
     image: grafana/grafana:10.1.4
     env_file: ./grafana/grafana.conf
-    container_name: celestia_da_grafana
+    container_name: celestia_grafana
     user: ${USERID:-1000}:${USERGP:-1000}
     volumes:
       - ./data/grafana:/var/lib/grafana
