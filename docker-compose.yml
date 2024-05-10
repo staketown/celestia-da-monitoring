@@ -1,9 +1,5 @@
 version: "3.5"
 
-#volumes:
-#  prometheus_data: {}
-#  grafana_data: {}
-
 networks:
   celestia_da_monitoring:
 
@@ -65,12 +61,12 @@ services:
       - "9093:9093"
     volumes:
       - ./prometheus/alert_manager:/etc/alertmanager:ro
-      - ./data/alertmanager:/data
-    command: [
-      '--config.file=/etc/alertmanager/alertmanager.yml',
-      '--log.level=debug',
-    ]
-    hostname: 'alertmanager'
+      - ./data/alert_manager:/data
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+    #  - '--storage.path=/data'
+      - '--log.level=debug'
+    hostname: 'alert_manager'
     restart: always
 
   cadvisor:
