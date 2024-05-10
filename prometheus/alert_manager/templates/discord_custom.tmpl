@@ -1,0 +1,14 @@
+{{ define "discord.title" }}
+[{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ range .GroupLabels.SortedPairs }}{{ if eq .Name "alertname" }}{{ .Value }}{{ end }}{{ end }}
+{{ end }}
+
+{{ define "discord.message" }}
+{{ range .Alerts }}
+**Summary:** {{ .Annotations.summary }}
+
+**Description:** {{ .Annotations.description }}
+
+**Labels:**{{ range $key, $value := .Labels }}{{ if match "^src|^dst" $key }}
+    {{ $key }}: {{ $value }}{{ end }}{{ end }}
+{{ end }}
+{{ end }}

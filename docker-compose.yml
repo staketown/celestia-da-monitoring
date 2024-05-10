@@ -64,7 +64,6 @@ services:
     ports:
       - "9093:9093"
     volumes:
-      - ./conf/discord_custom.tmpl:/etc/alertmanager/templates/discord_custom.tmpl:ro
       - ./prometheus/alert_manager:/etc/alertmanager:ro
       - ./data/alertmanager:/data
     command: [
