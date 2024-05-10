@@ -91,10 +91,14 @@ services:
     container_name: celestia_loki
     image: grafana/loki:2.9.1
     restart: always
-    user: ${USERID:-1000}:${USERGP:-1000}
+    # Since the Loki containers are running as user 10001 and the mounted data volume is owned by root,
+    # Loki would not have permissions to create the directories.
+    # Therefore, the init container changes permissions of the mounted directory.
+    user: root
     ports:
       - "3100:3100"
     volumes:
+      - celestia_loki_data:/mnt
       - ./loki/loki.yaml:/etc/loki/loki.yaml:ro
       - ./loki/rules:/etc/loki/rules/fake:ro
     command: -config.file=/etc/loki/loki.yaml
