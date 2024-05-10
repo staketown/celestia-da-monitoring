@@ -81,11 +81,10 @@ services:
       - '--path.rootfs=/host'
       - '--collector.systemd'
     pid: host
-    network_mode: host
     volumes:
       - '/:/host:ro,rslave'
-    expose:
-      - 9100
+    ports:
+      - "9100:9100"
 
   loki:
     container_name: celestia_loki
