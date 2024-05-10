@@ -93,11 +93,11 @@ services:
     container_name: celestia_loki
     image: grafana/loki:2.9.1
     restart: always
+    user: ${USER}:${USER}
     ports:
       - "3100:3100"
     volumes:
       - ./loki/loki.yaml:/etc/loki/loki.yaml:ro
-      - celestia_loki_data:/mnt
       - ./loki/rules:/etc/loki/rules/fake:ro
     command: -config.file=/etc/loki/loki.yaml
 

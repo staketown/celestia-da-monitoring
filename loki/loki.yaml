@@ -54,7 +54,7 @@ ruler:
     local:
       directory: /etc/loki/rules
   rule_path: /tmp/
-  alertmanager_url: http://alertmanager:9093
+  alertmanager_url: http://celestia_alertmanager:9093
   ring:
     kvstore:
       store: inmemory
