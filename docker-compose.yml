@@ -1,16 +1,18 @@
 version: "3.5"
 
-networks:
-  celestia_da_monitoring:
+volumes:
+  celestia_prometheus_data: {}
+  celestia_grafana_data: {}
+  celestia_alertmanager_data: {}
+  celestia_loki_data: {}
 
 services:
   prometheus:
     image: prom/prometheus:v2.47.0
     container_name: celestia_prometheus
-    user: ${USERID:-1000}:${USERGP:-1000}
     volumes:
       - ./prometheus/:/etc/prometheus/:ro
-      - ./data/prometheus:/prometheus
+      - celestia_prometheus_data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
@@ -19,8 +21,6 @@ services:
       - '--storage.tsdb.retention.time=360d'
     ports:
       - "9090:9090"
-    networks:
-      - celestia_da_monitoring
     restart: always
 
   # default login credentials: admin/admin
@@ -28,15 +28,13 @@ services:
     image: grafana/grafana:10.1.4
     env_file: ./grafana/grafana.conf
     container_name: celestia_grafana
-    user: ${USERID:-1000}:${USERGP:-1000}
     volumes:
-      - ./data/grafana:/var/lib/grafana
+      - celestia_grafana_data:/var/lib/grafana
       - ./grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
       - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
     ports:
       - "9999:3000"
-    networks:
-      - celestia_da_monitoring
+   
     restart: always
 
   celestia_da_exporter:
@@ -47,24 +45,20 @@ services:
     restart: always
     environment:
       - FLASK_DEBUG=true
-    networks:
-      - celestia_da_monitoring
+   
     entrypoint: ["/usr/bin/da-exporter", "--node", "${BRIDGE_RPC}", "--token", "${BRIDGE_TOKEN}"]
 
   alertmanager:
     image: prom/alertmanager:v0.26.0
     container_name: celestia_alertmanager
-    user: ${USERID:-1000}:${USERGP:-1000}
-    networks:
-      - celestia_da_monitoring
     ports:
       - "9093:9093"
     volumes:
       - ./prometheus/alert_manager:/etc/alertmanager:ro
-      - ./data/alertmanager:/data
+      - celestia_alertmanager_data:/data
     command:
       - '--config.file=/etc/alertmanager/alertmanager.yml'
-    #  - '--storage.path=/data'
+      - '--storage.path=/data'
       - '--log.level=debug'
     hostname: 'alert_manager'
     restart: always
@@ -73,8 +67,6 @@ services:
     image: gcr.io/cadvisor/cadvisor:v0.47.1
     container_name: celestia_cadvisor
     restart: unless-stopped
-    networks:
-      - celestia_da_monitoring
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw
@@ -87,8 +79,6 @@ services:
     image: prom/node-exporter:v1.6.1
     container_name: celestia_node_exporter
     restart: unless-stopped
-    networks:
-      - celestia_da_monitoring
     command:
       - '--path.rootfs=/host'
       - '--collector.systemd'
@@ -103,22 +93,17 @@ services:
     container_name: celestia_loki
     image: grafana/loki:2.9.1
     restart: always
-    user: ${USERID:-1000}:${USERGP:-1000}
-    networks:
-      - celestia_da_monitoring
     ports:
       - "3100:3100"
     volumes:
       - ./loki/loki.yaml:/etc/loki/loki.yaml:ro
-      - ${XDG_DATA_HOME:-./data}/loki:/mnt
+      - celestia_loki_data:/mnt
       - ./loki/rules:/etc/loki/rules/fake:ro
     command: -config.file=/etc/loki/loki.yaml
 
   promtail:
     container_name: celestia_promtail
     image: grafana/promtail:2.9.1
-    networks:
-      - celestia_da_monitoring
     restart: always
     volumes:
       - /var/log:/var/log:ro
