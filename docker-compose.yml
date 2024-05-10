@@ -49,10 +49,7 @@ services:
     restart: always
 
   celestia_da_exporter:
-    build:
-      dockerfile: .
-      labels:
-        celestia_da_exporter:
+    build: .
     container_name: celestia_da_exporter
     ports:
       - "9300:9300"
