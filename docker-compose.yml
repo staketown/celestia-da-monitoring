@@ -49,7 +49,7 @@ services:
       - FLASK_DEBUG=true
     networks:
       - celestia_da_monitoring
-    entrypoint: ["/usr/bin/da-exporter", "--node", "{BRIDGE_RPC}", "--token", "${BRIDGE_TOKEN}"]
+    entrypoint: ["/usr/bin/da-exporter", "--node", "${BRIDGE_RPC}", "--token", "${BRIDGE_TOKEN}"]
 
   alertmanager:
     image: prom/alertmanager:v0.26.0
