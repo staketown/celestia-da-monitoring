@@ -11,6 +11,7 @@ services:
   prometheus:
     image: prom/prometheus:v2.47.0
     container_name: celestia_da_prometheus
+    user: ${USERID:-1000}:${USERGP:-1000}
     volumes:
        - type: volume
          source: prometheus_data
@@ -36,6 +37,7 @@ services:
     image: grafana/grafana:10.1.4
     env_file: ./grafana/grafana.conf
     container_name: celestia_da_grafana
+    user: ${USERID:-1000}:${USERGP:-1000}
     volumes:
       - type: volume
         source: grafana_data
@@ -63,6 +65,7 @@ services:
   alertmanager:
     image: prom/alertmanager:v0.26.0
     container_name: celestia_da_alertmanager
+    user: ${USERID:-1000}:${USERGP:-1000}
     networks:
       - celestia_da_monitoring
     ports:
@@ -81,7 +84,7 @@ services:
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.47.1
-    container_name: cadvisor
+    container_name: celestia_cadvisor
     restart: unless-stopped
     networks:
       - celestia_da_monitoring
@@ -95,7 +98,7 @@ services:
 
   node-exporter:
     image: prom/node-exporter:v1.6.1
-    container_name: node_exporter
+    container_name: celestia_node_exporter
     restart: unless-stopped
     networks:
       - celestia_da_monitoring
@@ -109,9 +112,10 @@ services:
       - 9100
 
   loki:
-    container_name: loki
+    container_name: celestia_loki
     image: grafana/loki:2.9.1
     restart: always
+    user: ${USERID:-1000}:${USERGP:-1000}
     networks:
       - celestia_da_monitoring
     ports:
@@ -123,7 +127,7 @@ services:
     command: -config.file=/etc/loki/loki.yaml
 
   promtail:
-    container_name: promtail
+    container_name: celestia_promtail
     image: grafana/promtail:2.9.1
     networks:
       - celestia_da_monitoring
