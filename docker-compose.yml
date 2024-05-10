@@ -1,0 +1,138 @@
+version: "3.5"
+
+volumes:
+  prometheus_data: {}
+  grafana_data: {}
+
+networks:
+  celestia_da_monitoring:
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.47.0
+    container_name: celestia_da_prometheus
+    volumes:
+       - type: volume
+         source: prometheus_data
+         target: /prometheus
+       - type: bind
+         source: ./prometheus
+         target: /etc/prometheus
+         read_only: true 
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-lifecycle'
+      - '--log.level=warn'
+      - '--storage.tsdb.retention.time=360d'
+    ports:
+      - "9090:9090"
+    networks:
+      - celestia_da_monitoring
+    restart: always
+
+  # default login credentials: admin/admin
+  grafana:
+    image: grafana/grafana:10.1.4
+    env_file: ./grafana/grafana.conf
+    container_name: celestia_da_grafana
+    volumes:
+      - type: volume
+        source: grafana_data
+        target: /var/lib/grafana
+      - ./grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
+    ports:
+      - "9999:3000"
+    networks:
+      - celestia_da_monitoring
+    restart: always
+
+  celestia_da_exporter:
+    build:
+      dockerfile: .
+      labels:
+        celestia_da_exporter:
+    container_name: celestia_da_exporter
+    ports:
+      - "9300:9300"
+    restart: always
+    environment:
+      - FLASK_DEBUG=true
+    networks:
+      - celestia_da_monitoring
+    entrypoint: ["/usr/bin/da-exporter", "--node", "{BRIDGE_RPC}", "--token", "${BRIDGE_TOKEN}"]
+
+  alertmanager:
+    image: prom/alertmanager:v0.26.0
+    container_name: celestia_da_alertmanager
+    networks:
+      - celestia_da_monitoring
+    ports:
+      - "9093:9093"
+    volumes:
+      - type: bind
+        source: ./prometheus/alert_manager
+        target: /etc/alertmanager
+        read_only: true
+    command: [
+      '--config.file=/etc/alertmanager/alertmanager.yml',
+      '--log.level=debug',
+    ]
+    hostname: 'alertmanager'
+    restart: always
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.47.1
+    container_name: cadvisor
+    restart: unless-stopped
+    networks:
+      - celestia_da_monitoring
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    expose:
+      - 8080
+
+  node-exporter:
+    image: prom/node-exporter:v1.6.1
+    container_name: node_exporter
+    restart: unless-stopped
+    networks:
+      - celestia_da_monitoring
+    command:
+      - '--path.rootfs=/host'
+      - '--collector.systemd'
+    pid: host
+    volumes:
+      - '/:/host:ro,rslave'
+    expose:
+      - 9100
+
+  loki:
+    container_name: loki
+    image: grafana/loki:2.9.1
+    restart: always
+    networks:
+      - celestia_da_monitoring
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./loki/loki.yaml:/etc/loki/loki.yaml:ro
+      - ${XDG_DATA_HOME:-./data}/loki:/mnt
+      - ./loki/rules:/etc/loki/rules/fake:ro
+    command: -config.file=/etc/loki/loki.yaml
+
+  promtail:
+    container_name: promtail
+    image: grafana/promtail:2.9.1
+    networks:
+      - celestia_da_monitoring
+    restart: always
+    volumes:
+      - /var/log:/var/log:ro
+      - ./loki/promtail.yaml:/etc/promtail/promtail.yaml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    command: -config.file=/etc/promtail/promtail.yaml

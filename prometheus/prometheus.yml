@@ -1,0 +1,50 @@
+global:
+  scrape_interval: 10s
+  scrape_timeout: 10s
+  evaluation_interval: 15s
+
+alerting:
+  alertmanagers:
+    - follow_redirects: true
+      scheme: http
+      timeout: 10s
+      api_version: v2
+      static_configs:
+        - targets: [ celestia_da_alertmanager:9093 ]
+
+rule_files:
+  - /etc/prometheus/alerts/rules.yaml
+
+scrape_configs:
+  - job_name: prometheus
+    metrics_path: /metrics
+    static_configs:
+      - targets: [ localhost:9090 ]
+
+  - job_name: bridge-state
+    metrics_path: /metrics/state
+    static_configs:
+      - targets:
+          - celestia_da_exporter:9300
+        labels: {}
+
+  - job_name: bridge-p2p
+    metrics_path: /metrics/p2p
+    static_configs:
+      - targets:
+          - celestia_da_exporter:9300
+        labels: {}
+
+  - job_name: bridge-shares
+    metrics_path: /metrics/shares
+    static_configs:
+      - targets:
+          - celestia_da_exporter:9300
+        labels: {}
+
+  - job_name: bridge-header
+    metrics_path: /metrics/header
+    static_configs:
+      - targets:
+          - celestia_da_exporter:9300
+        labels: {}
