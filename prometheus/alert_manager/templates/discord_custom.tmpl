@@ -7,8 +7,5 @@
 **Summary:** {{ .Annotations.summary }}
 
 **Description:** {{ .Annotations.description }}
-
-**Labels:**{{ range $key, $value := .Labels }}{{ if match "^src|^dst" $key }}
-    {{ $key }}: {{ $value }}{{ end }}{{ end }}
 {{ end }}
 {{ end }}
