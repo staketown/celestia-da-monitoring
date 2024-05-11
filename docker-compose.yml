@@ -7,7 +7,7 @@ volumes:
   celestia_loki_data: {}
 
 services:
-  celestia_prometheus:
+  prometheus:
     image: prom/prometheus:v2.47.0
     container_name: celestia_prometheus
     volumes:
@@ -24,7 +24,7 @@ services:
     restart: always
 
   # default login credentials: admin/admin
-  celestia_grafana:
+  grafana:
     image: grafana/grafana:10.1.4
     env_file: ./grafana/grafana.conf
     container_name: celestia_grafana
@@ -46,7 +46,7 @@ services:
       - FLASK_DEBUG=true
     entrypoint: ["/usr/bin/da-exporter", "--node", "${BRIDGE_RPC}", "--token", "${BRIDGE_TOKEN}"]
 
-  celestia_alertmanager:
+  alertmanager:
     image: prom/alertmanager:v0.26.0
     container_name: celestia_alertmanager
     ports:
@@ -61,7 +61,7 @@ services:
     hostname: 'alert_manager'
     restart: always
 
-  celestia_cadvisor:
+  cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.47.1
     container_name: celestia_cadvisor
     restart: unless-stopped
@@ -73,7 +73,7 @@ services:
     expose:
       - 8080
 
-  celestia_node_exporter:
+  node_exporter:
     image: prom/node-exporter:v1.6.1
     container_name: celestia_node_exporter
     restart: unless-stopped
@@ -86,7 +86,7 @@ services:
     ports:
       - "9100:9100"
 
-  celestia_loki:
+  loki:
     container_name: celestia_loki
     image: grafana/loki:2.9.1
     restart: always
@@ -102,7 +102,7 @@ services:
       - ./loki/rules:/etc/loki/rules/fake:ro
     command: -config.file=/etc/loki/loki.yaml
 
-  celestia_promtail:
+  promtail:
     container_name: celestia_promtail
     image: grafana/promtail:2.9.1
     restart: always
