@@ -11,7 +11,7 @@ groups:
         description: "Celestia Bridge Node service is not running\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
     - alert: BridgeNodeStuck
-      expr: delta(local_height[5m]) != 0
+      expr: delta(local_height[5m]) == 0
       for: 1m
       labels:
         severity: warning
@@ -40,7 +40,7 @@ groups:
   - name: celestia-core
     rules:
     - alert: CoreNodeStuck
-      expr: delta(network_height[5m]) != 0
+      expr: delta(network_height[5m]) == 0
       for: 1m
       labels:
         severity: warning
@@ -49,7 +49,7 @@ groups:
         description: "Celestia Core Node {{ $labels.instance }} is stuck"
 
     - alert: CoreNodeUnusualBlockTime
-      expr: delta(network_height_time[1h]) / count_over_time(network_height_time[1h])
+      expr: delta(network_height_time[1h]) / count_over_time(network_height_time[1h]) > 24
       for: 1m
       labels:
         severity: info

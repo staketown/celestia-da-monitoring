@@ -2,7 +2,7 @@ global:
   resolve_timeout: 1m
 
 templates:
-  - '/etc/alert_manager/templates/discord_custom.tmpl'
+  - '/etc/alertmanager/templates/discord_custom.tmpl'
 
 route:
   group_by: ['...']
