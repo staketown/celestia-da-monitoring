@@ -13,7 +13,7 @@ alerting:
         - targets: [ celestia_alertmanager:9093 ]
 
 rule_files:
-  - /etc/prometheus/alerts/rules.yaml
+  - /etc/prometheus/alerts/*-rules.yaml
 
 scrape_configs:
   - job_name: prometheus

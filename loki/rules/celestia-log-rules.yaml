@@ -1,0 +1,12 @@
+groups:
+  - name: celestia-bridge
+    rules:
+      - alert: BridgeLogErrorDetected
+        expr: count_over_time ({unit=~"celestia-[lbf].*.service"} |~ "ERR.*"[1m]) >= 1
+        for: 0m
+        labels:
+            severity: warning
+            category: logs
+        annotations:
+            title: "Celestia Bridge Node logged an ERR"
+            description: "Celestia Bridge Node logged an ERR"
