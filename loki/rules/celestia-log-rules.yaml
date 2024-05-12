@@ -2,8 +2,9 @@ groups:
   - name: celestia-bridge
     rules:
       - alert: BridgeLogErrorDetected
-        expr: count_over_time ({unit=~"celestia-[lbf].*.service"} |~ "ERR.*"[1m]) >= 1
-        for: 0m
+        # >1 because of some errors could happen with broadcasting but usually it self-healing
+        expr: count_over_time({unit=~"celestia-[lbf].*.service"} |~ "ERR.*"[1m]) > 1
+        for: 1m
         labels:
             severity: warning
             category: logs

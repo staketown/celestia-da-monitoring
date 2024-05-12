@@ -1,4 +1,4 @@
-version: "3.5"
+version: "3.7"
 
 volumes:
   celestia_prometheus_data: {}
@@ -74,12 +74,13 @@ services:
       - 8080
 
   node_exporter:
-    image: prom/node-exporter:v1.6.1
+    image: prom/node-exporter:v1.8.0
     container_name: celestia_node_exporter
     restart: unless-stopped
     command:
       - '--path.rootfs=/host'
       - '--collector.systemd'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($|/)'
     pid: host
     network_mode: host
     volumes:
