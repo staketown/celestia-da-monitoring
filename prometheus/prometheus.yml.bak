@@ -1,5 +1,5 @@
 global:
-  scrape_interval: 10s
+  scrape_interval: 8s
   scrape_timeout: 10s
   evaluation_interval: 15s
 
@@ -19,17 +19,20 @@ scrape_configs:
   - job_name: prometheus
     metrics_path: /metrics
     static_configs:
-      - targets: [ localhost:9090, celestia_cadvisor:8080, celestia_node_exporter:9100 ]
+      - targets: [ localhost:9090, celestia_cadvisor:8080, PUBLIC_IP:9100 ]
 
-  - job_name: bridge-state
-    metrics_path: /metrics/state
-    static_configs:
-      - targets:
-          - celestia_da_exporter:9300
-        labels: {}
+# Disable as so far just make additional load
+#  - job_name: bridge-state
+#    metrics_path: /metrics/state
+#    static_configs:
+#      - targets:
+#          - celestia_da_exporter:9300
+#        labels: {}
 
   - job_name: bridge-p2p
     metrics_path: /metrics/p2p
+    scrape_interval: 20s
+    scrape_timeout: 10s
     static_configs:
       - targets:
           - celestia_da_exporter:9300

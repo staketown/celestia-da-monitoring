@@ -53,7 +53,7 @@ func SharesHandler(w http.ResponseWriter, r *http.Request, rpcClient *client.Cli
 	sharesByNamespaceGauge := prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
 			Name:        "shares_by_namespace",
-			Help:        "Total amount of shares per namespace by local height",
+			Help:        "All shares with proofs within a specific namespace by local height",
 			ConstLabels: ConstLabels,
 		},
 		[]string{
