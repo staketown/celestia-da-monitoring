@@ -144,7 +144,7 @@
           "refId": "A"
         }
       ],
-      "title": "Data Per Namespace",
+      "title": "Shares with Namespace per local height",
       "transformations": [
         {
           "id": "joinByLabels",
