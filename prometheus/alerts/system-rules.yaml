@@ -84,41 +84,68 @@ groups:
         summary: Host unusual disk write rate (instance {{ $labels.instance }})
         description: "Disk is probably writing too much data (> 150 MB/s)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
-    - alert: HostOutOfDiskSpace
-      expr: (node_filesystem_avail_bytes * 100) / node_filesystem_size_bytes < 10 and ON (instance, device, mountpoint) node_filesystem_readonly == 0
-      for: 2m
+    - alert: NodeDiskFull48H
+      expr: predict_linear(node_filesystem_free_bytes{fstype!~"rootfs|nfs4|tmpfs"}[4h], 48 * 3600) < 0
+      for: 5m
       labels:
-        severity: warning
+        severity: major
+        service: node_exporter
       annotations:
-        summary: Host out of disk space (instance {{ $labels.instance }})
-        description: "Disk is almost full (< 10% left)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description: 'Filesystem "{{ $labels.mountpoint }}" on "{{ $labels.instance }}" will be out of diskspace within 48 hours.'
 
-    - alert: HostDiskWillFillIn24Hours
-      expr: (node_filesystem_avail_bytes * 100) / node_filesystem_size_bytes < 10 and ON (instance, device, mountpoint) predict_linear(node_filesystem_avail_bytes{fstype!~"tmpfs"}[1h], 24 * 3600) < 0 and ON (instance, device, mountpoint) node_filesystem_readonly == 0
-      for: 2m
+    - alert: NodeDiskFull1H
+      expr: predict_linear(node_filesystem_free_bytes{fstype!~"rootfs|nfs4|tmpfs"}[4h], 3600) < 0
+      for: 5m
       labels:
-        severity: warning
+        severity: critical
+        service: node_exporter
       annotations:
-        summary: Host disk will fill in 24 hours (instance {{ $labels.instance }})
-        description: "Filesystem is predicted to run out of space within the next 24 hours at current write rate\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description: 'Filesystem "{{ $labels.mountpoint }}" on "{{ $labels.instance }}" will be out of diskspace within 1 hour.'
 
-    - alert: HostOutOfInodes
-      expr: node_filesystem_files_free{mountpoint ="/rootfs"} / node_filesystem_files{mountpoint="/rootfs"} * 100 < 10 and ON (instance, device, mountpoint) node_filesystem_readonly{mountpoint="/rootfs"} == 0
-      for: 2m
+    - alert: NodeDiskFull
+      expr: node_filesystem_avail_bytes/node_filesystem_size_bytes < 0.01
+      for: 5m
       labels:
-        severity: warning
+        severity: critical
+        service: node_exporter
       annotations:
-        summary: Host out of inodes (instance {{ $labels.instance }})
-        description: "Disk is almost running out of available inodes (< 10% left)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description: 'Filesystem "{{ $labels.mountpoint }}" on "{{ $labels.instance }}" is out of diskspace (< 1% free).'
 
-    - alert: HostInodesWillFillIn24Hours
-      expr: node_filesystem_files_free{mountpoint ="/rootfs"} / node_filesystem_files{mountpoint="/rootfs"} * 100 < 10 and predict_linear(node_filesystem_files_free{mountpoint="/rootfs"}[1h], 24 * 3600) < 0 and ON (instance, device, mountpoint) node_filesystem_readonly{mountpoint="/rootfs"} == 0
+    - alert: NodeInodeFull48H
+      expr: predict_linear(node_filesystem_files_free{fstype!~"rootfs|nfs4|tmpfs"}[4h], 48 * 3600) < 0
+      for: 5m
+      labels:
+        severity: major
+        service: node_exporter
+      annotations:
+        description: 'Filesystem "{{ $labels.mountpoint }}" on "{{ $labels.instance }}" will be out of inode numbers within 48 hours.'
+
+    - alert: NodeInodeFull1H
+      expr: predict_linear(node_filesystem_files_free{fstype!~"rootfs|nfs4|tmpfs"}[4h], 3600) < 0
+      for: 5m
+      labels:
+        severity: critical
+        service: node_exporter
+      annotations:
+        description: 'Filesystem "{{ $labels.mountpoint }}" on "{{ $labels.instance }}" will be out of inode numbers within 1 hour.'
+
+    - alert: NodeInodeFull
+      expr: node_filesystem_files_free/node_filesystem_files < 0.01
+      for: 5m
+      labels:
+        severity: critical
+        service: node_exporter
+      annotations:
+        description: 'Filesystem "{{ $labels.mountpoint }}" on "{{ $labels.instance }}" out of inodes (< 1% free).'
+
+    - alert: NodeOutOfMemory
+      expr: node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes * 100 < 10
       for: 2m
       labels:
-        severity: warning
+        severity: major
+        service: node_exporter
       annotations:
-        summary: Host inodes will fill in 24 hours (instance {{ $labels.instance }})
-        description: "Filesystem is predicted to run out of inodes within the next 24 hours at current write rate\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+        description: 'Node memory is filling up < 10% left\n  VALUE = {{ $value }}\n LABELS: {{ $labels.instance }}'
 
     - alert: HostUnusualDiskReadLatency
       expr: rate(node_disk_read_time_seconds_total[1m]) / rate(node_disk_reads_completed_total[1m]) > 0.3 and rate(node_disk_reads_completed_total[1m]) > 0

@@ -55,41 +55,14 @@ git clone https://github.com/staketown/celestia-da-monitoring.git
 cd celestia-da-monitoring
 ```
 
-### Setup env variables
-Setup bridge RPC, set your own **YOUR_BRIDGE_RPC_HERE**.
-```bash
-BRIDGE_RPC=YOUR_BRIDGE_RPC_HERE
-echo "export BRIDGE_RPC=$YOUR_BRIDGE_RPC_HERE" >> $HOME/.bash_profile
-source ~/.bash_profile
-```
-Setup webhook discord, set your own **YOUR_DISCORD_WEB_HOOK**.
-```bash
-DISCORD_WEB_HOOK=YOUR_DISCORD_WEB_HOOK
-echo "export DISCORD_WEB_HOOK=$DISCORD_WEB_HOOK" >> $HOME/.bash_profile
-source ~/.bash_profile
-```
-Next should be executed one of depends on which network you are going to use mocha or celestia
-```bash
-# for mainnet
-echo "export BRIDGE_TOKEN=$(celestia bridge auth admin --p2p.network celestia)" >> $HOME/.bash_profile
-source ~/.bash_profile
-```
-```bash
-# or for testnet
-echo "export BRIDGE_TOKEN=$(celestia bridge auth admin --p2p.network mocha)" >> $HOME/.bash_profile
-source ~/.bash_profile
-```
+### Prepare env and set variables
 
-Setup PUBLIC_API for prometheus
-```bash
-cp prometheus/prometheus.yml.bak prometheus/prometheus.yml
-sed -i "s/PUBLIC_IP/$(curl -4 ifconfig.me)/g" prometheus/prometheus.yml
-```
+Edit `prapare.sh` script with setting your own YOUR_DISCORD_WEB_HOOK, YOUR_BRIDGE_RPC_HERE and NETWORK.
 
-Setup DISCORD_HOOK for alertmanager
+Run script
+
 ```bash
-cp prometheus/alert_manager/alertmanager.yml.bak prometheus/alert_manager/alertmanager.yml
-sed -i "s|DISCORD_WEB_HOOK|$DISCORD_WEB_HOOK|g" prometheus/alert_manager/alertmanager.yml
+chmod +x prepare.sh && ./prepare
 ```
 
 ## Start monitoring
@@ -102,3 +75,7 @@ Start monitoring stack
 ```bash
 docker compose up -d
 ```
+
+## Reference list
+- Some logic taken from [celestia tools by P-OPSTeam](https://github.com/P-OPSTeam/celestia-tools)
+- Celestia official [doc](https://docs.celestia.org/nodes/overview)
