@@ -7,7 +7,7 @@ PUBLIC_IP=$(curl -4 ifconfig.me)
 NETWORK=celestia # set mocha if you need for testnet
 
 
-echo "export BRIDGE_RPC=$YOUR_BRIDGE_RPC_HERE" >> $HOME/.bash_profile
+echo "export BRIDGE_RPC=$BRIDGE_RPC" >> $HOME/.bash_profile
 echo "export DISCORD_WEB_HOOK=$DISCORD_WEB_HOOK" >> $HOME/.bash_profile
 echo "export BRIDGE_TOKEN=$(celestia bridge auth admin --p2p.network $NETWORK)" >> $HOME/.bash_profile
 source ~/.bash_profile

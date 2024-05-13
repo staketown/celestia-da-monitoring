@@ -62,7 +62,7 @@ Edit `prapare.sh` script with setting your own YOUR_DISCORD_WEB_HOOK, YOUR_BRIDG
 Run script
 
 ```bash
-chmod +x prepare.sh && ./prepare
+chmod +x prepare.sh && ./prepare.sh
 ```
 
 ## Start monitoring
