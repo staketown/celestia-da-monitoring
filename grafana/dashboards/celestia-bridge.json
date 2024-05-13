@@ -41,7 +41,7 @@
           "custom": {
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "Values per namespace",
+            "axisLabel": "Shares within a namespace",
             "axisPlacement": "auto",
             "hideFrom": {
               "legend": false,
@@ -523,7 +523,7 @@
           "refId": "A"
         }
       ],
-      "title": "Local local height gauge",
+      "title": "Local height gauge",
       "type": "timeseries"
     },
     {
@@ -639,7 +639,7 @@
         "type": "prometheus",
         "uid": "PBFA97CFB590B2093"
       },
-      "description": "Current network height",
+      "description": "Peers connected with DA node",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -704,7 +704,7 @@
         "type": "prometheus",
         "uid": "PBFA97CFB590B2093"
       },
-      "description": "Current network height",
+      "description": "Peers are blocked",
       "fieldConfig": {
         "defaults": {
           "color": {
