@@ -297,7 +297,7 @@
           "refId": "A"
         }
       ],
-      "title": "Local height time",
+      "title": "Local block time",
       "type": "stat"
     },
     {
@@ -428,7 +428,7 @@
           "refId": "A"
         }
       ],
-      "title": "Network height block time",
+      "title": "Network block time",
       "type": "stat"
     },
     {
@@ -1152,7 +1152,7 @@
     "list": []
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},
