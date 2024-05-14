@@ -57,7 +57,8 @@ cd celestia-da-monitoring
 
 ### Prepare env and set variables
 
-Edit `prapare.sh` script with setting your own YOUR_DISCORD_WEB_HOOK, YOUR_BRIDGE_RPC_HERE and NETWORK.
+Edit `prapare.sh` script with setting your own YOUR_DISCORD_WEB_HOOK, YOUR_BRIDGE_RPC_HERE and NETWORK 
+(default is set to celestia, don't forget to set to mocha if you are going to use for testnet bridge node).
 
 Run script
 
@@ -79,3 +80,4 @@ docker compose up -d
 ## Reference list
 - Some logic taken from [celestia tools by P-OPSTeam](https://github.com/P-OPSTeam/celestia-tools)
 - Celestia official [doc](https://docs.celestia.org/nodes/overview)
+- How to get [discord webhook](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks)
