@@ -1072,7 +1072,7 @@
           "editorMode": "code",
           "expr": "bandwidth_rate_in / 1000000",
           "instant": false,
-          "legendFormat": "received data in MB/s",
+          "legendFormat": "sent data in MB/s",
           "range": true,
           "refId": "A"
         },
@@ -1085,7 +1085,7 @@
           "expr": "bandwidth_rate_out / 1000000",
           "hide": false,
           "instant": false,
-          "legendFormat": "sent data in MB/s",
+          "legendFormat": "received data in MB/s",
           "range": true,
           "refId": "B"
         }
@@ -1159,6 +1159,6 @@
   "timezone": "",
   "title": "Celesta DA Dashboard",
   "uid": "ddl04rzktr8cgf",
-  "version": 1,
+  "version": 3,
   "weekStart": ""
 }
