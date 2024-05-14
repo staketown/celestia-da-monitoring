@@ -12,6 +12,13 @@ Monitoring based on the following components to monitor DA node without pointing
 - alertmanager - integrated with discord webhook but could be integrated with any supported [receivers](https://prometheus.io/docs/alerting/latest/configuration/#receiver-integration-settings). 
 - custom DA exporter - getting metrics (DA height, network height, peers, data received/sent etc.).
 
+## Dashboards
+#### Bridge Node
+![da_dashboard_1.png](images%2Fda_dashboard_1.png)
+![da_dashboard_2.png](images%2Fda_dashboard_2.png)
+#### Server
+![server_dashboard.png](images%2Fserver_dashboard.png)
+
 ## Prerequisites
 
 ---
