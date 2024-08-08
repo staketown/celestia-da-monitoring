@@ -9,5 +9,5 @@ groups:
             severity: warning
             category: logs
         annotations:
-            title: "Celestia Bridge Node logged an ERR"
-            description: "Celestia Bridge Node logged an ERR"
+            title: "Celestia Bridge Node logged an ERR. \nVALUE = {{ $value }"
+            description: "Celestia Bridge Node logged an ERR. \nVALUE = {{ $value }"
