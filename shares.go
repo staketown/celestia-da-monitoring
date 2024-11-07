@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/celestiaorg/celestia-node/api/rpc/client"
-	"github.com/celestiaorg/celestia-node/share"
+	"github.com/celestiaorg/go-square/v2/share"
 	"net/http"
 	"strconv"
 	"sync"
@@ -16,24 +16,28 @@ import (
 var (
 	namespaces = []InternalNamespace{
 		{
-			Name:      "PayForBlobNamespace",
-			Namespace: share.PayForBlobNamespace,
-		},
-		{
 			Name:      "TxNamespace",
 			Namespace: share.TxNamespace,
 		},
 		{
-			Name:      "ISRNamespace",
-			Namespace: share.ISRNamespace,
+			Name:      "IntermediateStateRootsNamespace",
+			Namespace: share.IntermediateStateRootsNamespace,
+		},
+		{
+			Name:      "PayForBlobNamespace",
+			Namespace: share.PayForBlobNamespace,
+		},
+		{
+			Name:      "PrimaryReservedPaddingNamespace",
+			Namespace: share.PrimaryReservedPaddingNamespace,
 		},
 		{
 			Name:      "MaxPrimaryReservedNamespace",
 			Namespace: share.MaxPrimaryReservedNamespace,
 		},
 		{
-			Name:      "PrimaryReservedPaddingNamespace",
-			Namespace: share.PrimaryReservedPaddingNamespace,
+			Name:      "MinSecondaryReservedNamespace",
+			Namespace: share.MinSecondaryReservedNamespace,
 		},
 	}
 )
@@ -79,27 +83,27 @@ func SharesHandler(w http.ResponseWriter, r *http.Request, rpcClient *client.Cli
 
 	var wg sync.WaitGroup
 
-	for _, namespace := range namespaces {
+	for _, ns := range namespaces {
 		wg.Add(1)
 
-		go func(namespace InternalNamespace) {
+		go func(ns InternalNamespace) {
 			defer wg.Done()
 
-			sharesByNamespaceResponse, err := rpcClient.Share.GetSharesByNamespace(ctx, localHead, namespace.Namespace)
+			sharesByNamespaceResponse, err := rpcClient.Share.GetNamespaceData(ctx, localHead.Height(), ns.Namespace)
 
 			if err != nil {
 				sublogger.Error().
 					Err(err).
-					Msgf("Could not get shares by namespace: %s", namespace)
+					Msgf("Could not get shares by namespace: %s", ns)
 				return
 			}
 
 			sharesByNamespaceGauge.With(prometheus.Labels{
-				"namespace":    namespace.Name,
+				"namespace":    ns.Name,
 				"local_height": strconv.FormatUint(localHead.Height(), 10),
 			}).Set(float64(len(sharesByNamespaceResponse.Flatten())))
 
-		}(namespace)
+		}(ns)
 	}
 
 	wg.Wait()

@@ -1,9 +1,7 @@
 package main
 
 import (
-	"fmt"
 	"github.com/celestiaorg/celestia-node/api/rpc/client"
-	"github.com/celestiaorg/celestia-node/share"
 	"net/http"
 	"time"
 
@@ -86,10 +84,6 @@ func HeaderHandler(w http.ResponseWriter, r *http.Request, rpcClient *client.Cli
 	localHeadTimeGauge.Set(float64(localHead.Time().Unix()))
 	networkHeadGauge.Set(float64(networkHead.Height()))
 	networkHeadTimeGauge.Set(float64(networkHead.Time().Unix()))
-
-	response, _ := rpcClient.Share.GetSharesByNamespace(ctx, localHead, share.PayForBlobNamespace)
-	fmt.Println(localHead.Height())
-	fmt.Println(len(response.Flatten()))
 
 	h := promhttp.HandlerFor(registry, promhttp.HandlerOpts{})
 	h.ServeHTTP(w, r)
