@@ -96,12 +96,12 @@
         },
         "series": [
           {
-            "name": "ISRNamespace",
+            "name": "IntermediateStateRootsNamespace",
             "pointColor": {
-              "field": "ISRNamespace"
+              "fixed": "dark-green"
             },
             "x": "local_height",
-            "y": "ISRNamespace"
+            "y": "IntermediateStateRootsNamespace"
           },
           {
             "name": "PayForBlobNamespace",
@@ -122,6 +122,12 @@
             "name": "TxNamespace",
             "x": "local_height",
             "y": "TxNamespace"
+          },
+          {
+            "name": "MinSecondaryReservedNamespace",
+            "pointColor": {},
+            "x": "local_height",
+            "y": "MinSecondaryReservedNamespace"
           }
         ],
         "seriesMapping": "manual",
