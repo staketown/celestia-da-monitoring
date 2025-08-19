@@ -9,7 +9,7 @@ WORKDIR /exporter
 COPY *.go go.sum go.mod ./
 RUN go build -o /da-exporter .
 
-FROM debian:buster-slim
+FROM debian:bookworm-slim
 
 RUN apt-get update && apt-get install -y ca-certificates && update-ca-certificates
 RUN useradd -ms /bin/bash exporter && chown -R exporter /usr
